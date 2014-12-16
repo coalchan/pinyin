@@ -6,5 +6,9 @@ var hans = [
 ];
 
 for(var i=0,l=hans.length; i<l; i++){
-  console.log(hans[i], pinyin(hans[i], {heteronym:true}));
+  console.log(hans[i], 
+    pinyin(hans[i], {
+      style: pinyin.STYLE_FINALS,
+      heteronym:true
+    }));
 }

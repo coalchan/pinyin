@@ -254,12 +254,12 @@ function finals(pinyin){
   });
   // console.log(pinyin);
   for(var i=0,l=FINALS.length; i<l; i++){
-    if(pinyin.indexOf(FINALS[i]) == 0  ){
+    if(pinyin.indexOf(FINALS[i]) === 0){
       return FINALS[i];
     }
   }
   for(var i=0,l=FINALS.length; i<l; i++){
-    if(pinyin.indexOf(FINALS[i]) > 0  ){
+    if(pinyin.indexOf(FINALS[i]) > 0){
       return FINALS[i];
     }
   }

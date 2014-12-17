@@ -56,6 +56,7 @@ var PINYIN_STYLE =  {
   TONE: 1,    // 标准风格，音标在韵母的第一个字母上。
   TONE2: 2,   // 声调中拼音之后，使用数字 1~4 标识。
   INITIALS: 3,// 仅需要声母部分。
+  FINALS: 5,
   FIRST_LETTER: 4 // 仅保留首字母。
 };
 // 带音标字符。
@@ -98,6 +99,9 @@ function toFixed(pinyin, style){
   case PINYIN_STYLE.INITIALS:
     return initials(pinyin);
 
+  case PINYIN_STYLE.FINALS:
+    return finals(pinyin);  
+    
   case PINYIN_STYLE.FIRST_LETTER:
     var first_letter = pinyin.charAt(0);
     if(PHONETIC_SYMBOL.hasOwnProperty(first_letter)){
@@ -229,7 +233,7 @@ function pinyin(hans, options){
 }
 
 
-// 格式化为声母(Initials)、韵母(Finals)。
+// 格式化为声母(Initials)
 // @param {String}
 // @return {String}
 function initials(pinyin){
@@ -241,10 +245,33 @@ function initials(pinyin){
   return "";
 }
 
+// 格式化为韵母(Finals)。
+// @param {String}
+// @return {String}
+function finals(pinyin){
+  pinyin = pinyin.replace(RE_PHONETIC_SYMBOL, function($0, $1_phonetic){
+    return PHONETIC_SYMBOL[$1_phonetic].replace(RE_TONE2, "$1");
+  });
+  // console.log(pinyin);
+  for(var i=0,l=FINALS.length; i<l; i++){
+    if(pinyin.indexOf(FINALS[i]) == 0  ){
+      return FINALS[i];
+    }
+  }
+  for(var i=0,l=FINALS.length; i<l; i++){
+    if(pinyin.indexOf(FINALS[i]) > 0  ){
+      return FINALS[i];
+    }
+  }
+  return "";
+}
+
 pinyin.STYLE_NORMAL = PINYIN_STYLE.NORMAL;
 pinyin.STYLE_TONE = PINYIN_STYLE.TONE;
 pinyin.STYLE_TONE2 = PINYIN_STYLE.TONE2;
 pinyin.STYLE_INITIALS = PINYIN_STYLE.INITIALS;
 pinyin.STYLE_FIRST_LETTER = PINYIN_STYLE.FIRST_LETTER;
+
+pinyin.STYLE_FINALS = PINYIN_STYLE.FINALS;
 
 module.exports = pinyin;
